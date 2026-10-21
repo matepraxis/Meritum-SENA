@@ -1,0 +1,69 @@
+{% extends 'aula/base.html' %}
+{% block contenido %}
+<div class="cabecera">
+  <div>
+    <span class="etiqueta">MERITUM · PROTOTIPO EDUCATIVO</span>
+    <h1>Hola, {{ user.first_name|default:user.username }}</h1>
+    <p>{% if docente %}Panel docente: registra avances y comparte recursos.{% else %}Tu participación construye tu trayectoria.{% endif %}</p>
+  </div>
+  {% if not docente %}<div class="saldo"><small>Tus Boscoins</small><strong>{{ saldo }}</strong><span>Saldo disponible</span></div>{% endif %}
+</div>
+
+{% if docente %}
+<section class="acciones tarjeta">
+  <h2>Acciones del docente</h2>
+  <div class="botones">
+    <a class="boton primario" href="{% url 'otorgar' %}">+ Otorgar Boscoins</a>
+    <a class="boton secundario" href="{% url 'nueva_recompensa' %}">+ Crear recompensa</a>
+    <a class="boton secundario" href="{% url 'nueva_publicacion' %}">+ Publicar anuncio</a>
+  </div>
+</section>
+<section class="tarjeta">
+  <h2>Últimos reconocimientos y movimientos</h2>
+  <div class="tabla-scroll"><table><thead><tr><th>Estudiante</th><th>Motivo</th><th>Cantidad</th></tr></thead><tbody>
+    {% for mov in reconocimientos_recientes %}<tr><td>{{ mov.estudiante.username }}</td><td>{{ mov.motivo }}</td><td class="numero">{{ mov.cantidad }}</td></tr>
+    {% empty %}<tr><td colspan="3">Todavía no hay movimientos.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% else %}
+<section class="tarjeta">
+  <h2>Tu historial de Boscoins</h2>
+  <div class="tabla-scroll"><table><thead><tr><th>Fecha</th><th>Motivo</th><th>Boscoins</th></tr></thead><tbody>
+    {% for mov in movimientos %}<tr><td>{{ mov.fecha|date:"d/m/Y" }}</td><td>{{ mov.motivo }}</td><td class="numero">{{ mov.cantidad }}</td></tr>
+    {% empty %}<tr><td colspan="3">Aún no tienes movimientos.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endif %}
+
+<div class="columnas">
+  <section class="tarjeta">
+    <h2>BoscoMarket <small>Recompensas</small></h2>
+    {% for recompensa in recompensas %}
+      <div class="elemento">
+        <div><h3>{{ recompensa.nombre }}</h3><p>{{ recompensa.descripcion|default:"Recompensa pedagógica" }}</p><small>Disponibles: {{ recompensa.existencias }}</small></div>
+        <div class="elemento-derecha"><strong>{{ recompensa.costo }} <small>BC</small></strong>
+          {% if not docente %}
+            <form method="post" action="{% url 'canjear' recompensa.id %}">
+              {% csrf_token %}
+              <button class="boton pequeno" type="submit" {% if recompensa.existencias == 0 or saldo < recompensa.costo %}disabled{% endif %}>Canjear</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}<p>El catálogo aún no tiene recompensas.</p>{% endfor %}
+  </section>
+  <section class="tarjeta">
+    <h2>Aula Meritum <small>Publicaciones</small></h2>
+    {% for publicacion in publicaciones %}
+      <article class="publicacion"><h3>{{ publicacion.titulo }}</h3><p>{{ publicacion.contenido|linebreaksbr }}</p><small>{{ publicacion.docente.username }} · {{ publicacion.fecha|date:"d/m/Y" }}</small></article>
+    {% empty %}<p>No hay anuncios todavía.</p>{% endfor %}
+  </section>
+</div>
+{% if not docente %}
+<section class="tarjeta">
+  <h2>Mis canjes</h2>
+  {% for canje in canjes %}<p>{{ canje.fecha|date:"d/m/Y" }} · {{ canje.recompensa.nombre }} · {{ canje.costo_aplicado }} BC</p>
+  {% empty %}<p>No has realizado canjes.</p>{% endfor %}
+</section>
+{% endif %}
+{% endblock %}

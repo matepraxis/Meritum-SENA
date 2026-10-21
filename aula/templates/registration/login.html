@@ -1,0 +1,19 @@
+{% extends 'aula/base.html' %}
+{% block titulo %}Iniciar sesión · Meritum-SENA{% endblock %}
+{% block contenido %}
+<section class="acceso tarjeta">
+  <div class="etiqueta">AULA DIGITAL · PROTOTIPO SENA</div>
+  <h1>Ingresa a Meritum</h1>
+  <p>Una versión educativa simplificada para aprender cómo se construye una plataforma web.</p>
+  {% if form.errors %}<p class="aviso error">Usuario o contraseña incorrectos.</p>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <label for="id_username">Usuario</label>
+    {{ form.username }}
+    <label for="id_password">Contraseña</label>
+    {{ form.password }}
+    <button type="submit" class="boton primario">Entrar</button>
+  </form>
+  <p class="ayuda">Solo para pruebas: crea las cuentas de demostración con <code>python manage.py cargar_demo</code>.</p>
+</section>
+{% endblock %}

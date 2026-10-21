@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Meritum-SENA{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'aula/estilos.css' %}">
+</head>
+<body>
+  <header class="barra">
+    <div class="marca"><span class="marca-icono">M</span><span>MERITUM <small>SENA · edición local</small></span></div>
+    {% if user.is_authenticated %}
+      <nav aria-label="Navegación principal">
+        <a href="{% url 'inicio' %}">Inicio</a>
+        <span class="usuario">{{ user.username }}</span>
+        <form class="salir" method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link" type="submit">Salir</button></form>
+      </nav>
+    {% endif %}
+  </header>
+  <main class="contenedor">
+    {% if messages %}
+      <div class="avisos" aria-live="polite">
+        {% for mensaje in messages %}<p class="aviso{% if mensaje.tags %} {{ mensaje.tags }}{% endif %}">{{ mensaje }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% block contenido %}{% endblock %}
+  </main>
+  <footer>Proyecto académico de demostración · Uso exclusivamente local con datos ficticios</footer>
+</body>
+</html>
