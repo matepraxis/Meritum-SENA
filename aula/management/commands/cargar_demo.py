@@ -1,6 +1,7 @@
 """Cuentas ficticias para una demostración local. Nunca usar con datos reales."""
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from aula.models import Movimiento, Perfil, Publicacion, Recompensa
 
 
@@ -8,6 +9,8 @@ class Command(BaseCommand):
     help = "Carga datos completamente ficticios para el proyecto SENA (idempotente)."
 
     def handle(self, *args, **options):
+        if not settings.DEBUG:
+            raise CommandError('cargar_demo solo puede ejecutarse en desarrollo local. Usa preparar_demo_online en el servidor.')
         usuario_modelo = get_user_model()
         for username, rol, first_name in [
             ("docente", Perfil.Rol.DOCENTE, "Docente Demo"),
