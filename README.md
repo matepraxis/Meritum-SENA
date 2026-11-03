@@ -97,7 +97,7 @@ La rama estable puede publicarse en un **servicio Render distinto** conectado ú
 
 - **No usar las credenciales públicas locales en Internet.** El servicio web genera las cuentas ficticias `docente_sena` y `estudiante_sena` con claves privadas configuradas en su propio entorno.
 - El uso web requiere `MERITUM_SENA_DEBUG=false`, `MERITUM_SENA_SECRET_KEY` y `DATABASE_URL` de SENA; sin esos valores el servidor no puede arrancar.
-- En la nube, SQLite no conserva los cambios al reiniciar Render; PostgreSQL gratuita expira en 30 días.
+- Para una exposición temporal, `MERITUM_SENA_DEMO_EFIMERA=true` permite ejecutar con SQLite efímera y datos ficticios, sin coste de base. Los cambios pueden perderse en reinicios; para persistencia usar PostgreSQL independiente.
 - Guía paso a paso: [Despliegue online independiente](docs/DESPLIEGUE_ONLINE.md).
 
 
