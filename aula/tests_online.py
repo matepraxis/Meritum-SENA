@@ -34,3 +34,46 @@ class InicializacionOnlineTests(TestCase):
         self.assertEqual(saldo_de(estudiante), 40)
         self.assertTrue(docente.check_password(secrets["MERITUM_SENA_DOCENTE_PASSWORD"]))
         self.assertEqual(User.objects.filter(username__in=["docente_sena", "estudiante_sena"]).count(), 2)
+
+
+class EstadoServicioTests(TestCase):
+    def test_salud_publica_esta_disponible(self):
+        from django.urls import reverse
+        response = self.client.get(reverse("salud"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"OK")
+        self.assertEqual(response["Cache-Control"], "no-store")
+
+    def test_salud_rechaza_post(self):
+        from django.urls import reverse
+        self.assertEqual(self.client.post(reverse("salud")).status_code, 405)
+
+    def test_salud_informa_indisponibilidad_sin_detalles(self):
+        from django.db import OperationalError
+        from django.urls import reverse
+        with patch("aula.health.connection.cursor", side_effect=OperationalError("DB secreta")):
+            response = self.client.get(reverse("salud"))
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn(b"DB secreta", response.content)
+
+
+class ContraseñasDemoTests(TestCase):
+    def test_rechaza_claves_iguales(self):
+        with patch.dict("os.environ", {
+            "MERITUM_SENA_DOCENTE_PASSWORD": "ClavesIgualesSoloParaPrueba2026!",
+            "MERITUM_SENA_ESTUDIANTE_PASSWORD": "ClavesIgualesSoloParaPrueba2026!",
+        }):
+            with self.assertRaises(CommandError):
+                call_command("preparar_demo_online")
+
+    def test_no_restaurar_password_existente(self):
+        User = get_user_model()
+        user = User.objects.create_user(username="docente_sena", password="ClavePropiaAnterior-2026!")
+        Perfil.objects.create(usuario=user, rol=Perfil.Rol.DOCENTE)
+        with patch.dict("os.environ", {
+            "MERITUM_SENA_DOCENTE_PASSWORD": "ClaveNuevaNoUsadaDocente-2026!",
+            "MERITUM_SENA_ESTUDIANTE_PASSWORD": "ClaveNuevaNoUsadaAlumno-2026!",
+        }):
+            call_command("preparar_demo_online")
+        user.refresh_from_db()
+        self.assertTrue(user.check_password("ClavePropiaAnterior-2026!"))
