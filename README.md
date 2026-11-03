@@ -99,3 +99,15 @@ La rama estable puede publicarse en un **servicio Render distinto** conectado ú
 - El uso web requiere `MERITUM_SENA_DEBUG=false`, `MERITUM_SENA_SECRET_KEY` y `DATABASE_URL` de SENA; sin esos valores el servidor no puede arrancar.
 - En la nube, SQLite no conserva los cambios al reiniciar Render; PostgreSQL gratuita expira en 30 días.
 - Guía paso a paso: [Despliegue online independiente](docs/DESPLIEGUE_ONLINE.md).
+
+
+## Material para la exposición SENA
+
+- [Guion de exposición para tres integrantes (5–7 min)](docs/GUIA_EXPOSICION.md)
+- [Demostración guiada y plan de respaldo](docs/DEMOSTRACION.md)
+- [Explicación sencilla de módulos y tecnologías](docs/EXPLICACION_TECNICA.md)
+- [Requerimientos funcionales, técnicos y pruebas](docs/REQUERIMIENTOS.md)
+
+### Cierre del sitio temporal
+
+Una vez finalice la exposición, desactivar o eliminar **únicamente** el servicio y la base `meritum-sena-*` en Render. Conservar el repositorio GitHub y sus documentos como evidencia. Nunca eliminar `meritum-pilot` ni `meritum-pilot-db`, que pertenecen al sistema institucional.
