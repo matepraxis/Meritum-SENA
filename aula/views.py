@@ -1,5 +1,6 @@
 """Operaciones pedagógicas, restringidas por rol y confirmadas con POST+CSRF."""
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
@@ -91,6 +92,9 @@ def canjear(request, recompensa_id):
     if not es_estudiante(request.user):
         raise PermissionDenied("Solo un estudiante puede canjear recompensas.")
     with transaction.atomic():
+        # Serializa canjes del mismo estudiante en PostgreSQL: evita doble gasto
+        # durante solicitudes simultáneas desde distintas pestañas.
+        get_user_model().objects.select_for_update().get(pk=request.user.pk)
         recompensa = get_object_or_404(Recompensa, pk=recompensa_id, activa=True)
         if saldo_de(request.user) < recompensa.costo:
             messages.error(request, "No tienes suficientes Boscoins.")

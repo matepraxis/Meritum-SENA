@@ -1,10 +1,10 @@
 # MERITUM-SENA
 
-**Prototipo educativo local** inspirado en la experiencia pedagógica de MERITUM, reducido para el proyecto de formación del SENA. No depende de Render, PostgreSQL, APIs de IA ni acceso permanente a Internet.
+**Prototipo educativo local y web independiente** inspirado en la experiencia pedagógica de MERITUM, reducido para el proyecto de formación del SENA. Su modo local no requiere nube; la edición web se aloja en un servicio independiente, con PostgreSQL propia, sin APIs de IA.
 
-MERITUM-SENA permite registrar reconocimientos mediante **Boscoins**, consultar el saldo, canjear recompensas simbólicas en **BoscoMarket** y publicar mensajes de aula. La aplicación funciona en el navegador de un solo computador, guardando sus datos en **SQLite**.
+MERITUM-SENA permite registrar reconocimientos mediante **Boscoins**, consultar el saldo, canjear recompensas simbólicas en **BoscoMarket** y publicar mensajes de aula. En modo local funciona con **SQLite**. En modo web funciona desde cualquier navegador autorizado, con una base **PostgreSQL exclusiva de Meritum-SENA**.
 
-> **Importante:** Esta edición es académica, no equivale a la plataforma MERITUM institucional y no debe utilizarse con información real de menores ni publicarse en Internet sin endurecimiento de seguridad y revisión legal.
+> **Importante:** Esta edición es académica, no equivale a la plataforma MERITUM institucional y no debe utilizarse con información real de menores. El despliegue web es exclusivamente una demo ficticia y requiere aplicar la guía de seguridad.
 
 ## 1. Requerimientos
 
@@ -89,3 +89,25 @@ Toda la información local se guarda en `db.sqlite3`, excluido de Git. Para resp
 Esta versión no contiene Ruta Kaizen, Ruta Saber, aXiomatic, AlgeBlocks, nivelaciones, módulos avanzados de evaluaciones, expedientes reales, fotografías, pagos ni conexión con MERITUM productivo.
 
 **Documentación:** [Requerimientos del proyecto](docs/REQUERIMIENTOS.md) · [Arquitectura y flujo](docs/ARQUITECTURA.md)
+
+
+## 9. Edición web independiente (opcional)
+
+La rama estable puede publicarse en un **servicio Render distinto** conectado únicamente a este repositorio, con una **base PostgreSQL nueva**. Los estudiantes solo necesitarán el enlace y una cuenta de prueba; no instalarán Python.
+
+- **No usar las credenciales públicas locales en Internet.** El servicio web genera las cuentas ficticias `docente_sena` y `estudiante_sena` con claves privadas configuradas en su propio entorno.
+- El uso web requiere `MERITUM_SENA_DEBUG=false`, `MERITUM_SENA_SECRET_KEY` y `DATABASE_URL` de SENA; sin esos valores el servidor no puede arrancar.
+- Para una exposición temporal, `MERITUM_SENA_DEMO_EFIMERA=true` permite ejecutar con SQLite efímera y datos ficticios, sin coste de base. Los cambios pueden perderse en reinicios; para persistencia usar PostgreSQL independiente.
+- Guía paso a paso: [Despliegue online independiente](docs/DESPLIEGUE_ONLINE.md).
+
+
+## Material para la exposición SENA
+
+- [Guion de exposición para tres integrantes (5–7 min)](docs/GUIA_EXPOSICION.md)
+- [Demostración guiada y plan de respaldo](docs/DEMOSTRACION.md)
+- [Explicación sencilla de módulos y tecnologías](docs/EXPLICACION_TECNICA.md)
+- [Requerimientos funcionales, técnicos y pruebas](docs/REQUERIMIENTOS.md)
+
+### Cierre del sitio temporal
+
+Una vez finalice la exposición, desactivar o eliminar **únicamente** el servicio y la base `meritum-sena-*` en Render. Conservar el repositorio GitHub y sus documentos como evidencia. Nunca eliminar `meritum-pilot` ni `meritum-pilot-db`, que pertenecen al sistema institucional.

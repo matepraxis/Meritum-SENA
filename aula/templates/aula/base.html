@@ -9,7 +9,7 @@
 </head>
 <body>
   <header class="barra">
-    <div class="marca"><span class="marca-icono">M</span><span>MERITUM <small>SENA · edición local</small></span></div>
+    <div class="marca"><span class="marca-icono">M</span><span>MERITUM <small>SENA · laboratorio educativo</small></span></div>
     {% if user.is_authenticated %}
       <nav aria-label="Navegación principal">
         <a href="{% url 'inicio' %}">Inicio</a>
@@ -26,6 +26,6 @@
     {% endif %}
     {% block contenido %}{% endblock %}
   </main>
-  <footer>Proyecto académico de demostración · Uso exclusivamente local con datos ficticios</footer>
+  <footer>Meritum-SENA · Prototipo académico independiente · Solo datos ficticios</footer>
 </body>
 </html>
