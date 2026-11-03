@@ -30,8 +30,9 @@ ALLOWED_HOSTS += [
 ]
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
-if not DEBUG and not DATABASE_URL:
-    raise ImproperlyConfigured("Meritum-SENA online necesita DATABASE_URL propia.")
+DEMO_EFIMERA = env_bool("MERITUM_SENA_DEMO_EFIMERA")
+if not DEBUG and not DATABASE_URL and not DEMO_EFIMERA:
+    raise ImproperlyConfigured("Necesitas DATABASE_URL propia o activar explícitamente MERITUM_SENA_DEMO_EFIMERA=true para demostración temporal.")
 if DATABASE_URL:
     DATABASES = {
         "default": dj_database_url.parse(
