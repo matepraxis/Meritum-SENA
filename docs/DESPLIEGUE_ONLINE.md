@@ -15,19 +15,19 @@ Publicar **Meritum-SENA** con URL propia, sin instalaciones en los equipos del S
 
 ## Costos y persistencia
 
-Render gratuito suspende los servicios web inactivos y borra los archivos locales en cada reinicio/despliegue. **SQLite no es apto para este caso.** La base PostgreSQL gratuita expira a los 30 días y solo se permite una gratuita por espacio de trabajo. Para conservar los datos durante el semestre, usar PostgreSQL con un plan estable o proveedor externo de persistencia compatible.
+Render gratuito suspende los servicios web inactivos y borra los archivos locales en cada reinicio/despliegue. **Para la exposición temporal se permite SQLite efímera**, activando `MERITUM_SENA_DEMO_EFIMERA=true`. Los datos de demostración pueden desaparecer si Render reinicia o vuelve a desplegar; el comando de inicio recrea cuentas y datos ficticios. Si se requiere conservar avances o datos entre reinicios, usar una base PostgreSQL independiente. La PostgreSQL gratuita expira a los 30 días.
 
 **Antes de crear servicios o bases de pago, confirmar precios, presupuesto y espacio de trabajo.**
 
 ## Crear servicio
 
-1. Crear una base **PostgreSQL nueva**, no conectada a MERITUM institucional, y conservar su URL interna privada.
+1. Para una exhibición temporal, utilizar **SQLite efímera** y añadir `MERITUM_SENA_DEMO_EFIMERA=true` en las variables del servicio. **No configurar DATABASE_URL institucional**. Opcionalmente, utilizar una base PostgreSQL exclusiva de SENA si se necesita guardar progresos entre reinicios.
 2. Crear un **Web Service** nuevo en Render desde `https://github.com/matepraxis/Meritum-SENA`, rama `main` después de fusionar el PR.
 3. Runtime: Python. Región sugerida: Virginia.
 4. Build Command: `pip install -r requirements.txt && python manage.py collectstatic --noinput`.
 5. Start Command: `bash deploy/start.sh`.
 6. Variables del **servicio nuevo**:
-   - `DATABASE_URL`: URL interna de la **nueva** base SENA.
+   - `MERITUM_SENA_DEMO_EFIMERA`: `true` en la muestra temporal. Si más adelante se usa PostgreSQL, desactivar esta bandera y configurar `DATABASE_URL` de la base **SENA**.
    - `MERITUM_SENA_SECRET_KEY`: secreto aleatorio largo, independiente.
    - `MERITUM_SENA_DEBUG`: `false`.
    - `MERITUM_SENA_DOCENTE_PASSWORD`: contraseña privada fuerte (14+ caracteres).
@@ -36,7 +36,7 @@ Render gratuito suspende los servicios web inactivos y borra los archivos locale
 7. Configurar `RENDER_EXTERNAL_HOSTNAME` automáticamente mediante Render; no se necesita abrir hosts con `*`.
 8. Ejecutar el despliegue; `deploy/start.sh` aplica migraciones y crea **solo las cuentas ficticias**, sin cambiar las contraseñas de cuentas que ya existían.
 9. Verificar inicio de sesión con `docente_sena` y `estudiante_sena`; publicar una prueba, otorgar 10 Boscoins y hacer un canje de demostración. Comprobar una nueva sesión y el CSS.
-10. Verificar que una actualización/reinicio no elimine el saldo: en la web debe persistir PostgreSQL, no SQLite.
+10. En modo **temporal**, avisar a los expositores que un reinicio puede restaurar la demo. No usar el saldo acumulado como evidencia permanente. En modo PostgreSQL debe persistir el saldo.
 
 ## Seguridad
 
@@ -45,7 +45,7 @@ Render gratuito suspende los servicios web inactivos y borra los archivos locale
 - Compartir URL y claves por un canal privado y rotarlas cuando termine el ejercicio.
 - Evitar acceso real de menores y fines productivos: es un prototipo educativo de laboratorio.
 - No habilitar registro público ni configurar `is_staff` o `is_superuser` para las cuentas de demostración.
-- La creación repetida de la demo no restablece contraseñas. Para rotarlas, usar operaciones seguras de administración de Django y documentar el cambio.
+- La demo temporal puede perder sus cambios al reiniciar Render. La creación repetida de la demo no restablece contraseñas. Para rotarlas, usar operaciones seguras de administración de Django y documentar el cambio.
 - Si se requiere uso en producción con personas reales: incorporar limitación de intentos de acceso, políticas de privacidad, permisos por grupo, auditoría, respaldos y revisión de seguridad.
 
 ## Diagnóstico
