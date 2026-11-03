@@ -124,3 +124,23 @@ Diseñar e implementar un prototipo web local de gestión de reconocimientos ped
 - **Fase 3 — Construcción:** autenticación, Boscoins, BoscoMarket, publicaciones.
 - **Fase 4 — Pruebas:** casos funcionales, controles de acceso y corrección de errores.
 - **Fase 5 — Sustentación:** demostración local, documentación y aprendizajes.
+
+
+## 13. Ampliación: edición web independiente
+
+Este alcance complementa el MVP local y **no lo reemplaza**. Las funcionalidades RF-01 a RF-13 se mantienen.
+
+| ID | Requerimiento | Criterio de aceptación |
+| --- | --- | --- |
+| RF-14 | Acceder vía navegador sin instalación | El estudiante accede desde una URL HTTPS sin instalar Python |
+| RF-15 | Aislamiento institucional | Servicio, contraseñas y base SENA son exclusivos; no hay enlaces a MERITUM institucional |
+| RF-16 | Inicializar demo remota | El primer arranque crea cuentas ficticias con contraseñas de entorno, sin claves públicas |
+| RNF-11 | Persistencia remota | PostgreSQL conserva saldos y canjes tras reinicios y despliegues |
+| RNF-12 | Seguridad web | `DEBUG=False`, SECRET_KEY privada, HTTPS, cookies seguras, CSRF y dominios permitidos |
+| RNF-13 | Instalación cero para estudiantes | Solo navegador y conexión a Internet, sin acceso al código ni credenciales técnicas |
+| RNF-14 | Privacidad | Prohibido cargar información real de menores; usar exclusivamente escenarios de laboratorio |
+| CP-08 | Comprobar despliegue | El login funciona por HTTPS y los estilos se cargan correctamente |
+| CP-09 | Comprobar independencia | No se modifica ni consulta la base institucional y no se cambian los servicios existentes |
+| CP-10 | Comprobar persistencia | Un canje registrado se mantiene tras reiniciar el servicio SENA |
+
+La arquitectura y los costos se detallan en [DESPLIEGUE_ONLINE.md](DESPLIEGUE_ONLINE.md).
