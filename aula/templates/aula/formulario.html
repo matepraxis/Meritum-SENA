@@ -2,15 +2,25 @@
 {% block titulo %}{{ titulo }} · Meritum-SENA{% endblock %}
 {% block contenido %}
 <section class="tarjeta formulario">
-  <a href="{% url 'inicio' %}" class="volver">← Volver al inicio</a>
+  <a href="{% url 'inicio' %}" class="volver">← Volver al panel</a>
+  <span class="sobretitulo">GESTIÓN DOCENTE</span>
   <h1>{{ titulo }}</h1>
-  <form method="post">
+  <p class="form-descripcion">Completa los datos para guardar esta acción de demostración.</p>
+  <form method="post" class="form-pila">
     {% csrf_token %}
     {{ form.non_field_errors }}
     {% for campo in form %}
-      <div class="campo"><label for="{{ campo.id_for_label }}">{{ campo.label }}</label>{{ campo }}{% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}{{ campo.errors }}</div>
+      <div class="campo">
+        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+        {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+        {{ campo.errors }}
+      </div>
     {% endfor %}
-    <button class="boton primario" type="submit">Guardar</button>
+    <div class="form-acciones">
+      <button class="boton primario" type="submit">Guardar cambios</button>
+      <a class="boton secundario" href="{% url 'inicio' %}">Cancelar</a>
+    </div>
   </form>
 </section>
 {% endblock %}
