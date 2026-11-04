@@ -1,0 +1,23 @@
+name: Ensayo de exposicion SENA
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ensayo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
+      - name: Verificar migraciones
+        run: python manage.py makemigrations --check --dry-run
+      - name: Comprobar materiales estaticos
+        run: python manage.py collectstatic --noinput
+      - name: Validar recorrido de la exposicion
+        run: python manage.py test aula.tests_exposicion -v 2
