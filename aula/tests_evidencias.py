@@ -153,7 +153,8 @@ class EvidenciasComoMeritumTests(TestCase):
             "descripcion": "Archivo ficticio para comprobar límites.",
             "archivo": SimpleUploadedFile("gigante.pdf", b"%PDF-" + b"X" * (2 * 1024 * 1024)),
         })
-        self.assertRedirects(response, reverse("inicio"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "2 MB")
         self.assertEqual(Evidencia.objects.count(), 0)
 
     def test_imagen_png_valida_se_optimiza_como_en_meritum(self):
