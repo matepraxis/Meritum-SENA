@@ -45,12 +45,12 @@ def inicio(request):
     if docente:
         contexto["reconocimientos_recientes"] = Movimiento.objects.select_related("estudiante").all()[:8]
         contexto["evidencias"] = Evidencia.objects.select_related(
-            "estudiante", "docente_evaluador"
+            "estudiante", "evaluacion__revisor"
         ).defer("contenido")[:12]
-        contexto["evidencias_pendientes"] = Evidencia.objects.filter(evaluada_en__isnull=True).count()
+        contexto["evidencias_pendientes"] = Evidencia.objects.filter(estado__in=[Evidencia.Estado.ENVIADA, Evidencia.Estado.RECIBIDA]).count()
     else:
         contexto["evidencias"] = Evidencia.objects.filter(estudiante=request.user).select_related(
-            "docente_evaluador"
+            "evaluacion__revisor"
         ).defer("contenido")[:12]
     return render(request, "aula/inicio.html", contexto)
 
