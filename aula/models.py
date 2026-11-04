@@ -1,6 +1,6 @@
 """Modelo educativo simplificado. Solo almacenar datos ficticios."""
 from django.conf import settings
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Sum
 
@@ -71,3 +71,46 @@ class Publicacion(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+class Evidencia(models.Model):
+    """Archivo privado del laboratorio; contenido guardado en la misma base temporal."""
+
+    estudiante = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="evidencias",
+    )
+    titulo = models.CharField(max_length=120)
+    descripcion = models.CharField(max_length=500, blank=True)
+    nombre_archivo = models.CharField(max_length=120)
+    tipo_archivo = models.CharField(max_length=40)
+    contenido = models.BinaryField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    comentario = models.TextField(max_length=1200, blank=True, default="")
+    boscoins = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+    )
+    evaluada_en = models.DateTimeField(blank=True, null=True)
+    docente_evaluador = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="evidencias_evaluadas",
+    )
+    movimiento = models.OneToOneField(
+        "Movimiento",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name="evidencia_origen",
+    )
+
+    class Meta:
+        ordering = ["-fecha", "-id"]
+
+    def __str__(self):
+        return f"{self.titulo} — {self.estudiante.username}"
