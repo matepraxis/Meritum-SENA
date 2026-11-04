@@ -1,6 +1,7 @@
 """Configuración de Meritum-SENA: desarrollo local o despliegue web independiente."""
 import os
 from pathlib import Path
+from tempfile import gettempdir
 
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
@@ -31,6 +32,10 @@ ALLOWED_HOSTS += [
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 DEMO_EFIMERA = env_bool("MERITUM_SENA_DEMO_EFIMERA")
+if not DEBUG and len(SECRET_KEY) < 50:
+    raise ImproperlyConfigured("MERITUM_SENA_SECRET_KEY debe tener al menos 50 caracteres en la web.")
+if not DEBUG and DATABASE_URL and DEMO_EFIMERA:
+    raise ImproperlyConfigured("Elige PostgreSQL O demo efímera, no ambas opciones a la vez.")
 if not DEBUG and not DATABASE_URL and not DEMO_EFIMERA:
     raise ImproperlyConfigured("Necesitas DATABASE_URL propia o activar explícitamente MERITUM_SENA_DEMO_EFIMERA=true para demostración temporal.")
 if DATABASE_URL:
@@ -45,7 +50,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": (Path(gettempdir()) / "meritum-sena-demo.sqlite3") if DEMO_EFIMERA else (BASE_DIR / "db.sqlite3"),
             "OPTIONS": {"timeout": 10},
         }
     }
@@ -107,6 +112,8 @@ LOGIN_REDIRECT_URL = "inicio"
 LOGOUT_REDIRECT_URL = "login"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = not DEBUG
+SESSION_COOKIE_AGE = 4 * 60 * 60
 CSRF_COOKIE_SAMESITE = "Lax"
 
 # HTTPS en despliegue web. No se comparte configuración con MERITUM institucional.

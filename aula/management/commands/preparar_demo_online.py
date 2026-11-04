@@ -24,6 +24,9 @@ class Command(BaseCommand):
                     f"Configura {var} con una contraseña privada de 14 o más caracteres."
                 )
 
+        if os.getenv(configuraciones[0][0]) == os.getenv(configuraciones[1][0]):
+            raise CommandError("Las cuentas de docente y estudiante necesitan claves distintas.")
+
         User = get_user_model()
         usuarios = {}
         for var, username, rol in configuraciones:
@@ -38,6 +41,8 @@ class Command(BaseCommand):
                     rol=rol,
                     grado="Laboratorio SENA" if rol == Perfil.Rol.ESTUDIANTE else "",
                 )
+            elif user.is_superuser or user.is_staff:
+                raise CommandError(f"La cuenta {username} no debe tener acceso administrativo.")
             elif not Perfil.objects.filter(usuario=user, rol=rol).exists():
                 raise CommandError(f"Conflicto de rol en {username}. Revisar manualmente.")
             usuarios[rol] = user

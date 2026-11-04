@@ -111,3 +111,7 @@ La rama estable puede publicarse en un **servicio Render distinto** conectado ú
 ### Cierre del sitio temporal
 
 Una vez finalice la exposición, desactivar o eliminar **únicamente** el servicio y la base `meritum-sena-*` en Render. Conservar el repositorio GitHub y sus documentos como evidencia. Nunca eliminar `meritum-pilot` ni `meritum-pilot-db`, que pertenecen al sistema institucional.
+
+### Verificación técnica de la demo web
+
+La ruta `/salud/` comprueba que la aplicación y su base de datos responden. En el alojamiento gratuito el servicio emplea un trabajador Gunicorn y SQLite temporal, por lo que **los movimientos pueden reiniciarse** al reconstruir el servicio. Esta versión solo admite datos ficticios.

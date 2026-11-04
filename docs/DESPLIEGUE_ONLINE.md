@@ -15,7 +15,7 @@ Publicar **Meritum-SENA** con URL propia, sin instalaciones en los equipos del S
 
 ## Costos y persistencia
 
-Render gratuito suspende los servicios web inactivos y borra los archivos locales en cada reinicio/despliegue. **Para la exposición temporal se permite SQLite efímera**, activando `MERITUM_SENA_DEMO_EFIMERA=true`. Los datos de demostración pueden desaparecer si Render reinicia o vuelve a desplegar; el comando de inicio recrea cuentas y datos ficticios. Si se requiere conservar avances o datos entre reinicios, usar una base PostgreSQL independiente. La PostgreSQL gratuita expira a los 30 días.
+Render gratuito puede suspender los servicios inactivos y no garantiza que los archivos locales sobrevivan a un reinicio o nuevo despliegue. **Para la exposición temporal se permite SQLite efímera**, activando `MERITUM_SENA_DEMO_EFIMERA=true`. Los datos de demostración pueden desaparecer si Render reinicia o vuelve a desplegar; el comando de inicio recrea cuentas y datos ficticios. Si se requiere conservar avances o datos entre reinicios, usar una base PostgreSQL independiente. La PostgreSQL gratuita expira a los 30 días.
 
 **Antes de crear servicios o bases de pago, confirmar precios, presupuesto y espacio de trabajo.**
 
@@ -34,8 +34,8 @@ Render gratuito suspende los servicios web inactivos y borra los archivos locale
    - `MERITUM_SENA_ESTUDIANTE_PASSWORD`: contraseña privada distinta (14+ caracteres).
    - `PYTHON_VERSION`: `3.13.9` si la versión está disponible en Render o la versión estable 3.13 disponible.
 7. Configurar `RENDER_EXTERNAL_HOSTNAME` automáticamente mediante Render; no se necesita abrir hosts con `*`.
-8. Ejecutar el despliegue; `deploy/start.sh` aplica migraciones y crea **solo las cuentas ficticias**, sin cambiar las contraseñas de cuentas que ya existían.
-9. Verificar inicio de sesión con `docente_sena` y `estudiante_sena`; publicar una prueba, otorgar 10 Boscoins y hacer un canje de demostración. Comprobar una nueva sesión y el CSS.
+8. Ejecutar el despliegue; `deploy/start.sh` verifica Django, aplica migraciones y crea **solo las cuentas ficticias**, sin cambiar las contraseñas de cuentas que ya existían. Gunicorn usa un solo trabajador para evitar bloqueos de SQLite en la demo.
+9. Verificar la ruta pública `/salud/` (debe responder `OK`), y luego el inicio de sesión con `docente_sena` y `estudiante_sena`; publicar una prueba, otorgar 10 Boscoins y hacer un canje de demostración. Comprobar una nueva sesión y el CSS.
 10. En modo **temporal**, avisar a los expositores que un reinicio puede restaurar la demo. No usar el saldo acumulado como evidencia permanente. En modo PostgreSQL debe persistir el saldo.
 
 ## Seguridad
@@ -57,3 +57,11 @@ python manage.py makemigrations --check --dry-run
 ```
 
 La edición local sigue funcionando mediante `INICIAR_WINDOWS.bat` con SQLite y DEBUG local. La web **no** modifica la base de datos de la otra aplicación.
+
+## Comprobaciones añadidas en PR #2
+
+- `GET /salud/` devuelve `OK` si la base de datos responde, o HTTP 503 si falla. No revela datos privados.
+- En Render temporal, SQLite se ubica en el directorio temporal del sistema, no en el repositorio.
+- Una sola instancia de Gunicorn atiende solicitudes para evitar escrituras simultáneas de la demo.
+- Para reiniciar una demostración efímera, un nuevo despliegue puede restaurar los datos ficticios. Nunca guardar evidencias importantes únicamente en la demo.
+- La integración continua simula arranque web (`DEBUG=False`) y comprueba migraciones, datos de prueba y carga de archivos estáticos.
