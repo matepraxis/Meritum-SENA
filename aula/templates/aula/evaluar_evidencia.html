@@ -1,0 +1,30 @@
+{% extends 'aula/base.html' %}
+{% block titulo %}Evaluar evidencia · Meritum-SENA{% endblock %}
+{% block contenido %}
+<section class="tarjeta formulario" aria-labelledby="titulo-evaluar">
+  <a class="volver" href="{% url 'inicio' %}">← Volver al panel</a>
+  <span class="sobretitulo">VALIDACIÓN DOCENTE · LABORATORIO SENA</span>
+  <h1 id="titulo-evaluar">Revisar evidencia</h1>
+  <h2>{{ evidencia.titulo }}</h2>
+  <p><strong>Estudiante:</strong> {{ evidencia.estudiante.username }} · <strong>Versión:</strong> {{ evidencia.numero_version }}</p>
+  <p>{{ evidencia.descripcion }}</p>
+  <p><a class="boton secundario" href="{% url 'descargar_evidencia' evidencia.public_id %}">Descargar archivo privado</a></p>
+  <form method="post" class="form-pila">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for campo in form %}
+      <div class="campo">
+        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+        {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+        {{ campo.errors }}
+      </div>
+    {% endfor %}
+    <p class="ayuda">Si solicitas ajustes, el estudiante podrá enviar una versión corregida sin recibir Boscoins todavía.</p>
+    <div class="form-acciones">
+      <button class="boton primario" type="submit">Guardar evaluación</button>
+      <a class="boton secundario" href="{% url 'inicio' %}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

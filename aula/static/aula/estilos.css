@@ -185,3 +185,24 @@ input:focus,textarea:focus,select:focus{outline:2px solid #60ae9e;outline-offset
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+/* Evidencias: patrón de seguimiento del Meritum original, simplificado para SENA. */
+.evidencia-item{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:20px 0;border-bottom:1px solid #e8eeea}
+.evidencia-item:last-child{border-bottom:0}
+.evidencia-contenido{flex:1;min-width:0}
+.evidencia-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12px;color:#687c7a;margin-bottom:9px}
+.evidencia-estado{display:inline-block;color:#526b6b;background:#edf1ee;padding:5px 10px;border-radius:100px;font-weight:700;font-size:11px}
+.evidencia-estado.validada{color:#08755a;background:#dff5e8}
+.evidencia-estado.ajustes{color:#995627;background:#fff1de}
+.evidencia-contenido p{font-size:13px;margin-bottom:7px;overflow-wrap:anywhere}
+.evidencia-contenido>small{color:#718583}
+.evidencia-comentario{background:#f2f7f2;border-left:3px solid #73a99a;padding:12px 14px;border-radius:6px;margin-top:14px}
+.evidencia-comentario strong{font-size:12px}
+.evidencia-comentario p{margin:6px 0}
+.evidencia-comentario small{color:#0f7256;font-weight:750}
+.evidencia-acciones{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:7px;max-width:260px}
+.evidencia-acciones form{margin:0}
+@media(max-width:720px){
+  .evidencia-item{flex-direction:column;gap:12px}
+  .evidencia-acciones{width:100%;max-width:none;justify-content:flex-start}
+}

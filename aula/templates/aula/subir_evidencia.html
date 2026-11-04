@@ -1,0 +1,28 @@
+{% extends 'aula/base.html' %}
+{% block titulo %}Enviar evidencia · Meritum-SENA{% endblock %}
+{% block contenido %}
+<section class="tarjeta formulario" aria-labelledby="titulo-evidencia">
+  <a class="volver" href="{% url 'inicio' %}">← Volver al panel</a>
+  <span class="sobretitulo">EVIDENCIAS · LABORATORIO SENA</span>
+  <h1 id="titulo-evidencia">{% if anterior %}Corregir evidencia{% else %}Enviar evidencia{% endif %}</h1>
+  <p>{% if anterior %}Tu docente solicitó ajustes. Esta entrega será la versión {{ anterior.numero_version|add:1 }}.{% else %}Presenta tu trabajo para que el docente lo revise y te deje comentarios.{% endif %}</p>
+  <p class="form-descripcion">Puedes enviar un PDF o una fotografía (JPG/PNG) de hasta 2 MB. Solo datos ficticios.</p>
+  <form method="post" enctype="multipart/form-data" class="form-pila">
+    {% csrf_token %}
+    {{ form.token_envio }}
+    {{ form.non_field_errors }}
+    {% for campo in form.visible_fields %}
+      <div class="campo">
+        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+        {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+        {{ campo.errors }}
+      </div>
+    {% endfor %}
+    <div class="form-acciones">
+      <button class="boton primario" type="submit">{% if anterior %}Reenviar corrección{% else %}Enviar a revisión{% endif %}</button>
+      <a class="boton secundario" href="{% url 'inicio' %}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -115,3 +115,9 @@ Una vez finalice la exposición, desactivar o eliminar **únicamente** el servic
 ### Verificación técnica de la demo web
 
 La ruta `/salud/` comprueba que la aplicación y su base de datos responden. En el alojamiento gratuito el servicio emplea un trabajador Gunicorn y SQLite temporal, por lo que **los movimientos pueden reiniciarse** al reconstruir el servicio. Esta versión solo admite datos ficticios.
+
+## Evidencias y validación docente (adaptación de MERITUM original)
+
+La versión de exposición incluye el flujo **enviar → recibir → validar o solicitar ajustes → comentar → otorgar Boscoins**. Las correcciones se presentan como nuevas versiones; un mismo envío o evaluación no puede duplicar puntos. Los archivos son privados y los datos de la demo temporal pueden reiniciarse.
+
+- [Referencia al módulo original y decisiones de adaptación](docs/ADAPTACION_EVIDENCIAS.md)

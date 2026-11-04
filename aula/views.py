@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from .forms import PublicacionForm, ReconocimientoForm, RecompensaForm
-from .models import Canje, Movimiento, Perfil, Publicacion, Recompensa, saldo_de
+from .models import Canje, Evidencia, Movimiento, Perfil, Publicacion, Recompensa, saldo_de
 
 
 def es_docente(usuario):
@@ -40,9 +40,18 @@ def inicio(request):
         "canjes": request.user.canjes.select_related("recompensa").all()[:10] if estudiante else [],
         "recompensas": Recompensa.objects.filter(activa=True),
         "publicaciones": Publicacion.objects.select_related("docente").all()[:10],
+        "evidencias": [],
     }
     if docente:
         contexto["reconocimientos_recientes"] = Movimiento.objects.select_related("estudiante").all()[:8]
+        contexto["evidencias"] = Evidencia.objects.select_related(
+            "estudiante", "evaluacion__revisor"
+        ).defer("contenido")[:12]
+        contexto["evidencias_pendientes"] = Evidencia.objects.filter(estado__in=[Evidencia.Estado.ENVIADA, Evidencia.Estado.RECIBIDA]).count()
+    else:
+        contexto["evidencias"] = Evidencia.objects.filter(estudiante=request.user).select_related(
+            "evaluacion__revisor"
+        ).defer("contenido")[:12]
     return render(request, "aula/inicio.html", contexto)
 
 
