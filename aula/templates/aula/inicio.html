@@ -29,6 +29,7 @@
 
 <nav class="enlaces-panel" aria-label="Secciones del panel">
   {% if docente %}<a href="#acciones">Acciones</a><a href="#movimientos">Movimientos</a>{% else %}<a href="#movimientos">Mis Boscoins</a>{% endif %}
+  <a href="#evidencias">Evidencias</a>
   <a href="#boscomarket">BoscoMarket</a>
   <a href="#aula">Aula</a>
 </nav>
@@ -61,6 +62,56 @@
   </div>
 </section>
 {% endif %}
+
+<section id="evidencias" class="seccion" aria-labelledby="titulo-evidencias">
+  <div class="seccion-titulo">
+    <div><span class="sobretitulo">SEGUIMIENTO FORMATIVO</span><h2 id="titulo-evidencias">Evidencias académicas</h2></div>
+    {% if docente %}
+      <p>{{ evidencias_pendientes }} pendientes de evaluación</p>
+    {% else %}
+      <a class="boton primario" href="{% url 'subir_evidencia' %}">+ Enviar evidencia</a>
+    {% endif %}
+  </div>
+  <div class="tarjeta">
+    {% for evidencia in evidencias %}
+      <article class="evidencia-item">
+        <div class="evidencia-contenido">
+          <div class="evidencia-meta">
+            <span class="evidencia-estado {% if evidencia.estado == 'approved' %}validada{% elif evidencia.estado == 'rejected' %}ajustes{% endif %}">{{ evidencia.get_estado_display }}</span>
+            <span>Versión {{ evidencia.numero_version }} · {{ evidencia.fecha|date:"d/m/Y" }}</span>
+          </div>
+          <h3>{{ evidencia.titulo }}</h3>
+          <p>{{ evidencia.descripcion }}</p>
+          {% if docente %}<small>Enviada por {{ evidencia.estudiante.username }}</small>{% endif %}
+          {% if evidencia.evaluacion %}
+            <div class="evidencia-comentario">
+              <strong>Retroalimentación docente</strong>
+              <p>{{ evidencia.evaluacion.comentario }}</p>
+              {% if evidencia.evaluacion.boscoins %}<small>+{{ evidencia.evaluacion.boscoins }} Boscoins otorgados</small>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="evidencia-acciones">
+          <a class="boton secundario pequeno" href="{% url 'descargar_evidencia' evidencia.public_id %}">Descargar</a>
+          {% if docente and evidencia.estado == 'pending' %}
+            <form method="post" action="{% url 'recibir_evidencia' evidencia.public_id %}">
+              {% csrf_token %}
+              <button class="boton secundario pequeno" type="submit">Marcar recibida</button>
+            </form>
+          {% endif %}
+          {% if docente and evidencia.estado == 'pending' or docente and evidencia.estado == 'received' %}
+            <a class="boton primario pequeno" href="{% url 'evaluar_evidencia' evidencia.public_id %}">Evaluar</a>
+          {% endif %}
+          {% if not docente and evidencia.estado == 'rejected' and not evidencia.tiene_revision %}
+            <a class="boton primario pequeno" href="{% url 'reenviar_evidencia' evidencia.public_id %}">Corregir y reenviar</a>
+          {% endif %}
+        </div>
+      </article>
+    {% empty %}
+      <p class="vacio">{% if docente %}Aún no hay evidencias enviadas.{% else %}Todavía no has enviado evidencias. Puedes comenzar con un PDF o una fotografía ficticia.{% endif %}</p>
+    {% endfor %}
+  </div>
+</section>
 
 <section id="movimientos" class="seccion">
   <div class="seccion-titulo">
