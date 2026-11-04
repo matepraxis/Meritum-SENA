@@ -29,9 +29,9 @@ class PublicacionForm(forms.ModelForm):
 MAX_EVIDENCIA_BYTES = 2 * 1024 * 1024
 TIPOS_EVIDENCIA = {
     ".pdf": ("application/pdf", b"%PDF-"),
-    ".png": ("image/png", b"\\x89PNG\\r\\n\\x1a\\n"),
-    ".jpg": ("image/jpeg", b"\\xff\\xd8\\xff"),
-    ".jpeg": ("image/jpeg", b"\\xff\\xd8\\xff"),
+    ".png": ("image/png", bytes.fromhex("89504e470d0a1a0a")),
+    ".jpg": ("image/jpeg", bytes.fromhex("ffd8ff")),
+    ".jpeg": ("image/jpeg", bytes.fromhex("ffd8ff")),
 }
 
 
