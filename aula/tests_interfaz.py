@@ -46,7 +46,9 @@ class InterfazExposicionTests(TestCase):
         )
         self.client.force_login(self.estudiante)
         respuesta = self.client.get(reverse("inicio"))
-        self.assertContains(respuesta, ">Canjear</button>")
+        self.assertContains(respuesta, "Canjear")
+        self.assertContains(respuesta, f'action="{reverse("canjear", args=[self.recompensa.id])}"')
+        self.assertNotContains(respuesta, 'aria-disabled="true"')
         self.assertContains(respuesta, "40")
 
     def test_recompensa_agotada_informa_estado_y_no_permita_canjear(self):
