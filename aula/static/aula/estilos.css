@@ -1,5 +1,187 @@
-:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#17243a;background:#f4f7fb;font-size:15px}
-*{box-sizing:border-box}body{margin:0;min-height:100vh}a{color:#194ca0;text-decoration:none}a:hover{text-decoration:underline}button,input,textarea,select{font:inherit}button{cursor:pointer}
-.barra{background:#112847;color:#fff;min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:14px max(22px,calc((100vw - 1100px)/2));gap:20px}.marca{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.08em}.marca-icono{display:grid;place-items:center;background:#ffc54a;color:#173353;border-radius:12px;font-size:27px;width:44px;height:44px}.marca small{display:block;font-size:10px;font-weight:500;letter-spacing:.07em;color:#c7d7ea}.barra nav{display:flex;align-items:center;gap:17px}.barra nav a,.barra .link{color:white}.usuario{color:#d6e0ef;font-size:13px}.salir{display:inline}.link{border:0;background:transparent;padding:0}.contenedor{max-width:1100px;margin:0 auto;padding:38px 22px 56px;min-height:calc(100vh - 140px)}footer{text-align:center;padding:28px;color:#67788e;font-size:12px}
-h1{font-size:clamp(26px,4vw,38px);margin:11px 0 9px;letter-spacing:-.04em}h2{margin:0 0 20px;font-size:19px;letter-spacing:-.02em}h2 small{font-size:12px;font-weight:500;color:#8190a3;margin-left:8px}h3{margin:0 0 8px;font-size:15px}p{line-height:1.5;color:#5c6f86;margin:0 0 13px}.etiqueta{font-size:11px;color:#4676b4;letter-spacing:.13em;font-weight:800}.cabecera{display:flex;justify-content:space-between;align-items:center;gap:25px;margin-bottom:28px}.tarjeta{background:white;border-radius:18px;padding:26px;margin-bottom:22px;border:1px solid #e4eaf2;box-shadow:0 6px 20px rgba(27,46,76,.04)}.saldo{min-width:192px;border-radius:17px;background:#183960;color:white;padding:22px 26px;display:flex;flex-direction:column}.saldo small{color:#bdd7ee}.saldo strong{font-size:48px;line-height:1.25}.saldo span{font-size:11px;color:#c6d8e8}.botones{display:flex;flex-wrap:wrap;gap:12px}.boton{display:inline-block;color:#163a64;border:1px solid #d5e0ee;border-radius:10px;background:#f4f7ff;padding:11px 16px;font-weight:650;font-size:13px;text-decoration:none}.boton:hover{text-decoration:none;filter:brightness(.98)}.boton.primario{background:#194f8d;color:#fff;border-color:#194f8d}.boton.secundario{background:white}.boton.pequeno{font-size:12px;padding:8px 12px}.boton:disabled{opacity:.42;cursor:not-allowed}.columnas{display:grid;grid-template-columns:1fr 1fr;gap:22px}.columnas .tarjeta{margin-bottom:22px}.elemento{display:flex;justify-content:space-between;gap:14px;padding:16px 0;border-top:1px solid #e9eef5}.elemento:first-of-type{border-top:0}.elemento p{font-size:13px;margin-bottom:8px}.elemento small,.publicacion small{color:#78899f;font-size:12px}.elemento-derecha{text-align:right;display:flex;flex-direction:column;align-items:end;gap:10px;min-width:84px}.elemento-derecha strong{font-size:18px}.publicacion{border-top:1px solid #e9eef5;padding:16px 0}.publicacion:first-of-type{border-top:0}.publicacion p{font-size:13px;overflow-wrap:anywhere}.tabla-scroll{overflow:auto}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px;border-bottom:1px solid #eef2f6}th{color:#65768b;font-weight:600;font-size:12px}td{font-size:13px}.numero{font-weight:700}.acceso{max-width:430px;margin:30px auto 0}.acceso form,.formulario form{display:flex;flex-direction:column;gap:12px}.acceso label,.campo label{font-weight:650;font-size:13px;display:block;margin-bottom:6px}input:not([type=checkbox]),textarea,select{background:#fff;border:1px solid #cdd8e5;border-radius:10px;width:100%;padding:12px;color:#17243a}input:focus,textarea:focus,select:focus{outline:2px solid #6f9ed2}.campo{margin:0 0 8px}.campo small{display:block;color:#789}.campo input[type=checkbox]{width:auto}.formulario{max-width:680px;margin:auto}.volver{font-size:13px}.ayuda{font-size:12px;margin-top:20px}.avisos{margin-bottom:20px}.aviso{padding:12px 16px;background:#e8f3ed;border-radius:10px;color:#236542}.aviso.error{background:#fff0ee;color:#9c3535}.errorlist{color:#b23434;font-size:12px}
-@media(max-width:720px){.columnas{grid-template-columns:1fr}.cabecera{align-items:stretch;flex-direction:column}.saldo{min-width:auto}.barra{flex-wrap:wrap}.contenedor{padding-top:24px}.tarjeta{padding:20px}}
+/* Meritum-SENA: estética propia, ligera y sin librerías externas. */
+:root{
+  font-family: system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:#1a343b;background:#f6f7f4;font-size:16px;
+  font-synthesis:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:22px}
+body{margin:0;min-height:100vh;line-height:1.5}
+a{color:#0e625e;text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.65}
+:focus-visible{outline:3px solid #f3b642;outline-offset:3px}
+.saltar{position:absolute;left:12px;top:-60px;background:white;color:#173f42;padding:10px 15px;z-index:20;border-radius:8px}
+.saltar:focus{top:10px}
+.barra{background:#102b36;color:white}
+.barra-interior{max-width:1160px;margin:auto;min-height:79px;padding:14px 25px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.marca{display:inline-flex;align-items:center;gap:12px;color:white}
+.marca:hover{text-decoration:none}
+.marca-icono{width:44px;height:44px;display:grid;place-items:center;background:#f8c764;color:#102b36;border-radius:13px;font-weight:900;font-size:25px;letter-spacing:-.09em}
+.marca-icono span{color:#0d786e}
+.marca-texto{font-size:18px;line-height:1.15;font-weight:800;letter-spacing:.04em}
+.marca-sena{font-size:14px;font-weight:700;color:#f8c764;margin-left:6px}
+.marca-texto small{display:block;font-size:10px;color:#c4d6d6;font-weight:500;letter-spacing:.12em;margin-top:5px}
+.menu{display:flex;align-items:center;gap:17px;font-size:13px}
+.menu a,.salir-boton{color:white}
+.usuario{padding:7px 12px;background:#264552;border-radius:100px;color:#e4f2f0;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.salir{margin:0}
+.salir-boton{background:transparent;border:1px solid #6b8993;border-radius:8px;padding:8px 13px}
+.salir-boton:hover{background:#284956}
+.chip{font-size:12px;font-weight:700;border-radius:100px;padding:8px 13px}
+.chip-demo{background:#244650;color:#f5db9d}
+.contenedor{width:min(1160px,100%);min-height:calc(100vh - 165px);margin:0 auto;padding:33px 25px 60px}
+.pie{max-width:1160px;margin:auto;display:flex;justify-content:space-between;gap:10px;padding:20px 25px 34px;color:#617277;font-size:12px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(32px,4.4vw,58px);letter-spacing:-.055em;line-height:1.09}
+h2{font-size:clamp(21px,2.4vw,27px);line-height:1.25;letter-spacing:-.035em;margin-bottom:10px}
+h3{font-size:15px;line-height:1.3;margin-bottom:6px}
+p{color:#51666a;line-height:1.55}
+.sobretitulo{font-size:11px;font-weight:800;letter-spacing:.13em;color:#0c746a}
+.separador{padding:0 5px;color:#9bb2ad}
+.bienvenida{border-radius:24px;min-height:310px;background:#e7efea;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(265px,.74fr);overflow:hidden;margin-bottom:23px}
+.bienvenida-texto{padding:36px clamp(25px,4vw,53px)}
+.bienvenida h1{font-size:clamp(31px,4vw,50px);margin:14px 0 15px}
+.bienvenida h1 em,.acceso-info h1 em{font-style:normal;color:#08756c}
+.bienvenida p{max-width:560px;margin-bottom:23px}
+.bienvenida-etiquetas{display:flex;flex-wrap:wrap;gap:8px}
+.bienvenida-etiquetas span{padding:6px 10px;border-radius:100px;background:rgba(255,255,255,.75);font-size:12px;font-weight:600;color:#355d60}
+.resumen-visual{background:#103e47;color:white;padding:33px 30px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;position:relative;isolation:isolate}
+.resumen-visual:before{content:"";position:absolute;width:210px;height:210px;right:-75px;top:-70px;border-radius:50%;background:rgba(126,215,192,.12);z-index:-1}
+.resumen-visual strong{font-size:clamp(30px,3vw,40px);line-height:1.15;letter-spacing:-.04em}
+.resumen-visual>span:not(.resumen-simbolo):not(.saldo-etiqueta){color:#b4d4d2;font-size:13px}
+.resumen-simbolo{font-size:52px;color:#f8c764;line-height:1}
+.saldo-etiqueta{font-size:11px;font-weight:800;letter-spacing:.16em;color:#c3e4df}
+.resumen-visual .saldo-cifra{font-size:clamp(48px,6vw,70px)}
+.saldo-cifra small{font-size:17px;letter-spacing:0}
+.resumen-visual .boton{margin-top:14px}
+.enlaces-panel{display:flex;flex-wrap:wrap;gap:9px;padding:0 0 12px;border-bottom:1px solid #dce5df;margin-bottom:35px}
+.enlaces-panel a{padding:9px 14px;color:#2f5254;font-weight:650;font-size:13px;border-radius:9px}
+.enlaces-panel a:hover{background:#e4eee8;text-decoration:none}
+.seccion{margin:0 0 37px}
+.seccion-titulo{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}
+.seccion-titulo h2{margin-top:6px;margin-bottom:0}
+.seccion-titulo p{font-size:13px;margin-bottom:0;max-width:340px}
+.rejilla-acciones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.accion-item{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:188px;padding:22px;background:white;border:1px solid #e3eae5;border-radius:17px;color:#263e41;box-shadow:0 2px 8px #173f4210}
+.accion-item:hover{text-decoration:none;border-color:#87b6a7;box-shadow:0 7px 18px #173f4215;transform:translateY(-1px)}
+.accion-icono{font-size:11px;font-weight:900;color:#0c756b;background:#e2f1e9;border-radius:9px;padding:6px 9px}
+.accion-item strong{font-size:17px;line-height:1.25;margin-top:5px}
+.accion-item>span:nth-of-type(2){font-size:13px;color:#637477}
+.accion-enlace{margin-top:auto;color:#0b7168;font-size:13px;font-weight:800}
+.tarjeta{background:white;border:1px solid #e2e9e4;border-radius:18px;padding:24px;box-shadow:0 2px 12px rgba(24,51,47,.045)}
+.tabla-scroll{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{text-transform:uppercase;font-size:11px;letter-spacing:.08em;font-weight:750;color:#688080}
+td,th{padding:13px 10px;text-align:left;border-bottom:1px solid #e9eeeb}
+td{font-size:13px;color:#3d585d}
+tr:last-child td{border-bottom:none}
+.numero{text-align:right;font-variant-numeric:tabular-nums;font-weight:750;white-space:nowrap}
+.positivo{color:#127d5d}
+.negativo{color:#b45438}
+.vacio{color:#788a89;font-size:13px;padding:22px 10px}
+.columnas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.tarjeta-seccion{min-width:0}
+.tarjeta-encabezado{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.tarjeta-encabezado h2{margin:5px 0 0}
+.icono-seccion{background:#e7f2e8;color:#08766a;border-radius:14px;padding:11px 15px;font-size:22px}
+.tarjeta-descripcion{font-size:13px;margin:12px 0 20px}
+.elemento{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:19px 0;border-top:1px solid #e8eeea}
+.elemento-cuerpo{min-width:0}
+.elemento p{font-size:13px;overflow-wrap:anywhere;margin-bottom:7px}
+.elemento small,.publicacion small{font-size:11px;color:#6d8381}
+.elemento-derecha{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0}
+.elemento-derecha strong{color:#0b6f63;font-size:21px;white-space:nowrap}
+.elemento-derecha strong small{font-size:12px}
+.elemento-derecha form{margin:0}
+.boton{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:11px 17px;background:#e7f1ee;border:1px solid transparent;border-radius:10px;color:#175b54;font-size:13px;font-weight:750;text-align:center;text-decoration:none}
+.boton:hover:not(:disabled){text-decoration:none;filter:brightness(.95)}
+.boton.primario{background:#0e6d64;color:white}
+.boton.secundario{background:#eef2ef;color:#285756;border-color:#dce7df}
+.boton.claro{background:#f8c764;color:#102b36}
+.boton.pequeno{min-height:35px;max-width:145px;font-size:11px;padding:7px 10px}
+.boton-ancho{width:100%;margin-top:10px}
+.publicacion{border-top:1px solid #e8eeea;padding:19px 0}
+.publicacion-fecha{font-size:11px;color:#08776d;font-weight:750;letter-spacing:.04em}
+.publicacion h3{margin:7px 0 8px}
+.publicacion p{font-size:13px;overflow-wrap:anywhere}
+.lista-canjes{list-style:none;margin:0;padding:0}
+.lista-canjes li{display:flex;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid #e6ece8;font-size:14px}
+.lista-canjes li:last-child{border:0}
+.lista-canjes li strong{white-space:nowrap;color:#ae533b}
+.lista-canjes small{color:#849393;font-size:12px}
+.avisos{margin-bottom:20px}
+.aviso{padding:14px 17px;border-radius:12px;background:#e8f4eb;color:#145b4d;font-size:13px}
+.aviso.error{background:#fdf0e9;color:#99422a}
+.acceso-disposicion{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.8fr);align-items:center;gap:clamp(20px,5vw,70px);min-height:calc(100vh - 235px)}
+.acceso-info{padding:32px 0}
+.acceso-info h1{margin:19px 0 19px;font-size:clamp(37px,5vw,67px)}
+.acceso-info>p{max-width:495px}
+.acceso-pasos{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0}
+.acceso-pasos span{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:#e5ede7;font-size:12px;font-weight:650;color:#375a57}
+.acceso-pasos strong{color:#0c7c6c}
+.acceso-info .nota-demo{font-size:12px;color:#7a8b88}
+.acceso{padding:34px;max-width:440px;width:100%;margin:auto}
+.acceso h2{font-size:29px;margin:12px 0}
+.acceso p{font-size:13px}
+.form-pila{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.form-pila label{font-size:13px;font-weight:750}
+input:not([type=checkbox]),textarea,select{width:100%;border:1px solid #c8d8d0;border-radius:10px;min-height:44px;padding:12px 13px;color:#1e3d3b;background:white}
+input:focus,textarea:focus,select:focus{outline:2px solid #60ae9e;outline-offset:1px}
+.form-pila .ayuda,.ayuda{margin-top:15px;font-size:12px;color:#778987}
+.formulario{max-width:690px;margin:20px auto;padding:32px}
+.formulario h1{font-size:clamp(28px,3.5vw,42px);margin:12px 0}
+.volver{font-size:13px;display:inline-block;margin-bottom:20px}
+.form-descripcion{font-size:13px}
+.campo{margin:0 0 7px}
+.campo label{display:block;margin-bottom:7px}
+.campo small{display:block;margin-top:6px;color:#657d76;font-size:12px}
+.campo input[type=checkbox]{min-height:auto;width:auto}
+.errorlist{padding-left:16px;color:#a43626;font-size:12px}
+.form-acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+@media(max-width:900px){
+  .acceso-disposicion{grid-template-columns:1fr;gap:0;min-height:auto}
+  .acceso-info{padding:16px 0 10px}
+  .acceso{max-width:600px}
+  .acceso-info h1{font-size:42px}
+  .acceso-pasos{margin:18px 0}
+}
+@media(max-width:720px){
+  html{scroll-behavior:auto}
+  .barra-interior{padding:13px 18px;min-height:72px}
+  .marca-icono{height:39px;width:39px;font-size:23px}
+  .marca-texto{font-size:15px}
+  .marca-sena{font-size:12px}
+  .marca-texto small{font-size:9px}
+  .menu{gap:9px}
+  .usuario{display:none}
+  .contenedor{padding:19px 16px 44px}
+  .pie{padding:20px 16px 28px;flex-direction:column;font-size:11px}
+  .bienvenida{grid-template-columns:1fr}
+  .bienvenida-texto{padding:27px 23px}
+  .bienvenida h1{font-size:34px}
+  .resumen-visual{padding:24px 23px;min-height:190px}
+  .resumen-visual .saldo-cifra{font-size:54px}
+  .seccion-titulo{display:block}
+  .seccion-titulo p{margin-top:8px}
+  .rejilla-acciones{grid-template-columns:1fr;gap:10px}
+  .accion-item{min-height:140px;padding:19px}
+  .columnas{grid-template-columns:1fr}
+  .tarjeta{padding:18px}
+  .acceso{padding:25px}
+  .acceso-info h1{font-size:38px}
+  .formulario{margin:0}
+}
+@media(max-width:390px){
+  .marca-texto small{display:none}
+  .barra-interior{gap:8px}
+  .menu{font-size:12px}
+  .chip-demo{font-size:10px;padding:6px 8px}
+  .elemento{flex-direction:column}
+  .elemento-derecha{align-items:flex-start;gap:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}

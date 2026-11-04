@@ -4,28 +4,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block titulo %}Meritum-SENA{% endblock %}</title>
+  <meta name="theme-color" content="#102b36">
+  <meta name="description" content="Meritum-SENA, laboratorio académico de reconocimientos, Boscoins y BoscoMarket.">
+  <title>{% block titulo %}Meritum-SENA · Laboratorio académico{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'aula/estilos.css' %}">
 </head>
 <body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
   <header class="barra">
-    <div class="marca"><span class="marca-icono">M</span><span>MERITUM <small>SENA · laboratorio educativo</small></span></div>
-    {% if user.is_authenticated %}
-      <nav aria-label="Navegación principal">
-        <a href="{% url 'inicio' %}">Inicio</a>
-        <span class="usuario">{{ user.username }}</span>
-        <form class="salir" method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link" type="submit">Salir</button></form>
-      </nav>
-    {% endif %}
+    <div class="barra-interior">
+      <a class="marca" href="{% url 'inicio' %}" aria-label="Meritum-SENA, inicio">
+        <span class="marca-icono" aria-hidden="true">M<span>.</span></span>
+        <span class="marca-texto">MERITUM<span class="marca-sena">/ SENA</span><small>Laboratorio académico</small></span>
+      </a>
+      {% if user.is_authenticated %}
+        <nav class="menu" aria-label="Navegación principal">
+          <a href="{% url 'inicio' %}">Inicio</a>
+          <span class="usuario">{{ user.username }}</span>
+          <form class="salir" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="salir-boton" type="submit">Salir</button>
+          </form>
+        </nav>
+      {% else %}
+        <span class="chip chip-demo">Demostración académica</span>
+      {% endif %}
+    </div>
   </header>
-  <main class="contenedor">
+
+  <main id="contenido" class="contenedor">
     {% if messages %}
-      <div class="avisos" aria-live="polite">
-        {% for mensaje in messages %}<p class="aviso{% if mensaje.tags %} {{ mensaje.tags }}{% endif %}">{{ mensaje }}</p>{% endfor %}
+      <div class="avisos" role="status" aria-live="polite">
+        {% for mensaje in messages %}
+          <p class="aviso{% if mensaje.tags %} {{ mensaje.tags }}{% endif %}">{{ mensaje }}</p>
+        {% endfor %}
       </div>
     {% endif %}
     {% block contenido %}{% endblock %}
   </main>
-  <footer>Meritum-SENA · Prototipo académico independiente · Solo datos ficticios</footer>
+  <footer class="pie">
+    <span>MERITUM-SENA <span aria-hidden="true">·</span> Proyecto de formación</span>
+    <span>Versión independiente · Solo datos ficticios</span>
+  </footer>
 </body>
 </html>

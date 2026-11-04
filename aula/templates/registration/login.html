@@ -1,19 +1,33 @@
 {% extends 'aula/base.html' %}
-{% block titulo %}Iniciar sesión · Meritum-SENA{% endblock %}
+{% block titulo %}Ingresar · Meritum-SENA{% endblock %}
 {% block contenido %}
-<section class="acceso tarjeta">
-  <div class="etiqueta">AULA DIGITAL · PROTOTIPO SENA</div>
-  <h1>Ingresa a Meritum-SENA</h1>
-  <p>Edición educativa para practicar el uso de una plataforma web con datos ficticios.</p>
-  {% if form.errors %}<p class="aviso error">Usuario o contraseña incorrectos.</p>{% endif %}
-  <form method="post">
-    {% csrf_token %}
-    <label for="id_username">Usuario</label>
-    {{ form.username }}
-    <label for="id_password">Contraseña</label>
-    {{ form.password }}
-    <button type="submit" class="boton primario">Entrar</button>
-  </form>
-  <p class="ayuda">Accede con las credenciales de demostración entregadas por el docente del proyecto.</p>
-</section>
+<div class="acceso-disposicion">
+  <section class="acceso-info" aria-labelledby="bienvenida">
+    <span class="sobretitulo">LABORATORIO DIGITAL · SENA</span>
+    <h1 id="bienvenida">Aprender también es <em>construir.</em></h1>
+    <p>Un proyecto académico para experimentar con reconocimientos, Boscoins y recompensas educativas.</p>
+    <div class="acceso-pasos" aria-label="¿Cómo funciona?">
+      <span><strong>01</strong> Ingresa</span>
+      <span><strong>02</strong> Participa</span>
+      <span><strong>03</strong> Explora</span>
+    </div>
+    <p class="nota-demo">Proyecto demostrativo. No utilizar información real de estudiantes.</p>
+  </section>
+  <section class="tarjeta acceso" aria-labelledby="titulo-acceso">
+    <span class="sobretitulo">ACCESO A LA DEMO</span>
+    <h2 id="titulo-acceso">Iniciar sesión</h2>
+    <p>Utiliza las credenciales de prueba entregadas por el equipo expositor.</p>
+    {% if form.errors %}<p class="aviso error" role="alert">Usuario o contraseña incorrectos. Intenta nuevamente.</p>{% endif %}
+    <form method="post" class="form-pila">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next|default:'' }}">
+      <label for="id_username">Usuario</label>
+      {{ form.username }}
+      <label for="id_password">Contraseña</label>
+      {{ form.password }}
+      <button type="submit" class="boton primario boton-ancho">Ingresar a Meritum-SENA</button>
+    </form>
+    <p class="ayuda">Acceso restringido a las cuentas de demostración.</p>
+  </section>
+</div>
 {% endblock %}
