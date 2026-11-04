@@ -1,0 +1,26 @@
+# Meritum-SENA: demostración web TEMPORAL, sin base institucional ni servicios de pago.
+# Este archivo NO despliega nada hasta que se cree explícitamente un Blueprint en Render.
+services:
+  - type: web
+    name: meritum-sena-demo
+    runtime: python
+    plan: free
+    region: virginia
+    branch: main
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: bash deploy/start.sh
+    healthCheckPath: /salud/
+    autoDeployTrigger: off
+    envVars:
+      - key: MERITUM_SENA_DEBUG
+        value: "false"
+      - key: MERITUM_SENA_DEMO_EFIMERA
+        value: "true"
+      - key: MERITUM_SENA_SECRET_KEY
+        sync: false
+      - key: MERITUM_SENA_DOCENTE_PASSWORD
+        sync: false
+      - key: MERITUM_SENA_ESTUDIANTE_PASSWORD
+        sync: false
+# SIN sección databases. SQLite es efímera: los datos pueden reiniciarse.
+# NO añadir DATABASE_URL de MERITUM institucional.
